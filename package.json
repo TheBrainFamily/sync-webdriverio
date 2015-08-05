@@ -1,6 +1,6 @@
 {
   "name": "@xolvio/sync-webdriverio",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "A sync version of WebdriverIO powered by Fibers",
   "keywords": [
     "webdriverio",
@@ -24,7 +24,11 @@
   },
   "main": "index.js",
   "jest": {
-    "moduleFileExtensions": ["js", "json", "node"]
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "node"
+    ]
   },
   "dependencies": {
     "underscore": "^1.8.3",
