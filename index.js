@@ -33,11 +33,9 @@ webdriverioWithSync.remote = function (options) {
   };
 
   // Wrap async all core commands
+  var webdriverioPath = path.dirname(require.resolve('webdriverio'));
   ['protocol', 'commands'].forEach(function(commandType) {
-    var dir = path.resolve(
-      __dirname,
-      path.join('node_modules', 'webdriverio', 'lib', commandType)
-    );
+    var dir = path.resolve(webdriverioPath, path.join('lib', commandType));
     var files = fs.readdirSync(dir);
 
     var commandNames = files.map(function(filename) {
