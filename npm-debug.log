@@ -1,0 +1,96 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/home/jonas/.nvm/v0.10.39/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '@xolvio/fiber-utils',
+1 verbose cli   '--save' ]
+2 info using npm@2.13.3
+3 info using node@v0.10.39
+4 verbose install initial load of /home/jonas/projects/sync-webdriverio/package.json
+5 warn package.json @xolvio/sync-webdriverio@3.1.0 No README data
+6 verbose installManyTop reading scoped package data from /home/jonas/projects/sync-webdriverio/node_modules/fibers/package.json
+7 verbose installManyTop reading scoped package data from /home/jonas/projects/sync-webdriverio/node_modules/jest-cli/package.json
+8 verbose installManyTop reading scoped package data from /home/jonas/projects/sync-webdriverio/node_modules/underscore/package.json
+9 verbose installManyTop reading scoped package data from /home/jonas/projects/sync-webdriverio/node_modules/webdriverio/package.json
+10 verbose installManyTop reading scoped package data from /home/jonas/projects/sync-webdriverio/node_modules/@xolvio/fiber-utils/package.json
+11 verbose installManyTop reading scoped package data from /home/jonas/projects/sync-webdriverio/node_modules/@xolvio/fibers/package.json
+12 info package.json webdriverio@3.1.0 No license field.
+13 info package.json @xolvio/fiber-utils@1.0.0 No README data
+14 verbose readDependencies loading dependencies from /home/jonas/projects/sync-webdriverio/package.json
+15 verbose install @xolvio/fiber-utils is installed as 1.0.0
+16 silly cache add args [ '@xolvio/fiber-utils', null ]
+17 verbose cache add spec @xolvio/fiber-utils
+18 silly cache add parsed spec { raw: '@xolvio/fiber-utils',
+18 silly cache add   scope: '@xolvio',
+18 silly cache add   name: '@xolvio/fiber-utils',
+18 silly cache add   rawSpec: '',
+18 silly cache add   spec: '*',
+18 silly cache add   type: 'range' }
+19 silly addNamed @xolvio/fiber-utils@*
+20 verbose addNamed "*" is a valid semver range for @xolvio/fiber-utils
+21 silly addNameRange { name: '@xolvio/fiber-utils', range: '*', hasData: false }
+22 silly mapToRegistry name @xolvio/fiber-utils
+23 silly mapToRegistry scope (from package name) @xolvio
+24 verbose mapToRegistry no registry URL found in name for scope @xolvio
+25 silly mapToRegistry using default registry
+26 silly mapToRegistry registry https://registry.npmjs.org/
+27 silly mapToRegistry uri https://registry.npmjs.org/@xolvio%2ffiber-utils
+28 verbose addNameRange registry:https://registry.npmjs.org/@xolvio%2ffiber-utils not in flight; fetching
+29 verbose request uri https://registry.npmjs.org/@xolvio%2ffiber-utils
+30 verbose request no auth needed
+31 info attempt registry request try #1 at 15:15:10
+32 verbose request using bearer token for auth
+33 verbose request id 60d16b6666439203
+34 http request GET https://registry.npmjs.org/@xolvio%2ffiber-utils
+35 http 404 https://registry.npmjs.org/@xolvio%2ffiber-utils
+36 verbose headers { 'content-type': 'application/json',
+36 verbose headers   'cache-control': 'max-age=0',
+36 verbose headers   'content-length': '21',
+36 verbose headers   'accept-ranges': 'bytes',
+36 verbose headers   date: 'Wed, 05 Aug 2015 13:15:11 GMT',
+36 verbose headers   via: '1.1 varnish',
+36 verbose headers   connection: 'keep-alive',
+36 verbose headers   'x-served-by': 'cache-fra1231-FRA',
+36 verbose headers   'x-cache': 'MISS',
+36 verbose headers   'x-cache-hits': '0',
+36 verbose headers   'x-timer': 'S1438780510.327514,VS0,VE958' }
+37 silly get cb [ 404,
+37 silly get   { 'content-type': 'application/json',
+37 silly get     'cache-control': 'max-age=0',
+37 silly get     'content-length': '21',
+37 silly get     'accept-ranges': 'bytes',
+37 silly get     date: 'Wed, 05 Aug 2015 13:15:11 GMT',
+37 silly get     via: '1.1 varnish',
+37 silly get     connection: 'keep-alive',
+37 silly get     'x-served-by': 'cache-fra1231-FRA',
+37 silly get     'x-cache': 'MISS',
+37 silly get     'x-cache-hits': '0',
+37 silly get     'x-timer': 'S1438780510.327514,VS0,VE958' } ]
+38 verbose stack Error: Not found : @xolvio/fiber-utils
+38 verbose stack     at CachingRegistryClient.<anonymous> (/home/jonas/.nvm/v0.10.39/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:247:14)
+38 verbose stack     at Request._callback (/home/jonas/.nvm/v0.10.39/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:170:14)
+38 verbose stack     at Request.self.callback (/home/jonas/.nvm/v0.10.39/lib/node_modules/npm/node_modules/request/request.js:198:22)
+38 verbose stack     at Request.emit (events.js:98:17)
+38 verbose stack     at Request.<anonymous> (/home/jonas/.nvm/v0.10.39/lib/node_modules/npm/node_modules/request/request.js:1057:14)
+38 verbose stack     at Request.emit (events.js:117:20)
+38 verbose stack     at IncomingMessage.<anonymous> (/home/jonas/.nvm/v0.10.39/lib/node_modules/npm/node_modules/request/request.js:1003:12)
+38 verbose stack     at IncomingMessage.emit (events.js:117:20)
+38 verbose stack     at _stream_readable.js:944:16
+38 verbose stack     at process._tickCallback (node.js:448:13)
+39 verbose statusCode 404
+40 verbose pkgid @xolvio/fiber-utils
+41 verbose cwd /home/jonas/projects/sync-webdriverio
+42 error Linux 3.16.0-45-generic
+43 error argv "node" "/home/jonas/.nvm/v0.10.39/bin/npm" "install" "@xolvio/fiber-utils" "--save"
+44 error node v0.10.39
+45 error npm  v2.13.3
+46 error code E404
+47 error 404 Not found : @xolvio/fiber-utils
+47 error 404
+47 error 404 '@xolvio/fiber-utils' is not in the npm registry.
+47 error 404 You should bug the author to publish it (or use the name yourself!)
+47 error 404 It was specified as a dependency of '@xolvio/sync-webdriverio'
+47 error 404
+47 error 404 Note that you can also install from a
+47 error 404 tarball, folder, http url, or git url.
+48 verbose exit [ 1, true ]

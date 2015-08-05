@@ -1,0 +1,37 @@
+{
+  "name": "@xolvio/sync-webdriverio",
+  "version": "3.1.0",
+  "description": "A sync version of WebdriverIO powered by Fibers",
+  "keywords": [
+    "webdriverio",
+    "selenium",
+    "phantom",
+    "testing",
+    "saucelabs"
+  ],
+  "author": "Jonas Aschenbrenner <jonas@xolv.io> (http://xolv.io)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xolvio/sync-webdriverio"
+  },
+  "homepage": "",
+  "bugs": {
+    "url": "https://github.com/xolvio/sync-webdriverio/issues"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "main": "index.js",
+  "jest": {
+    "moduleFileExtensions": ["js", "json", "node"]
+  },
+  "dependencies": {
+    "underscore": "^1.8.3",
+    "webdriverio": "^3.1.0",
+    "@xolvio/fiber-utils": "^1.0.0"
+  },
+  "devDependencies": {
+    "jest-cli": "^0.4.17"
+  }
+}
