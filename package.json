@@ -31,9 +31,11 @@
     ]
   },
   "dependencies": {
+    "@xolvio/fiber-utils": "^2.0.2",
+    "fibers": "^1.0.6",
+    "meteor-promise": "^0.4.1",
     "underscore": "^1.8.3",
-    "webdriverio": "^3.1.0",
-    "@xolvio/fiber-utils": "^1.0.0"
+    "webdriverio": "webdriverio/webdriverio#ce51baa"
   },
   "devDependencies": {
     "jest-cli": "^0.4.17"
