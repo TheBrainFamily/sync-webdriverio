@@ -35,7 +35,7 @@
     "fibers": "^1.0.6",
     "meteor-promise": "^0.4.1",
     "underscore": "^1.8.3",
-    "webdriverio": "webdriverio/webdriverio#ce51baa"
+    "webdriverio": "^3.2.1"
   },
   "devDependencies": {
     "jest-cli": "^0.4.17"
