@@ -30,8 +30,8 @@ webdriverioWithSync.remote = function (options) {
   remote.waitUntil = function (condition/*, arguments */) {
     arguments[0] = Promise.async(condition);
 
-    return waitUntil.apply(this, arguments);
-  }
+    return waitUntil.apply(remote, arguments);
+  };
 
   // Wrap async all core commands
   var webdriverioPath = path.dirname(require.resolve('webdriverio'));
