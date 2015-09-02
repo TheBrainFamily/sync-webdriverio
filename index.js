@@ -55,12 +55,11 @@ webdriverioWithSync.remote = function (options) {
   // Wrap async added commands
   var addCommand = remote.addCommand;
   remote.addCommand = function (fnName, fn, forceOverwrite) {
-    var result = addCommand.apply(this, arguments);
+    var result = addCommand.call(remote, fnName, Promise.async(fn), forceOverwrite);
     var commandWrapper = wrapAsyncObject(remote, [fnName], {
       syncByDefault: syncByDefault,
       wrapAsync: wrapAsyncForWebdriver
     });
-    _.defaults(remote, commandWrapper);
     _.defaults(remoteWrapper, commandWrapper);
 
     return result;
