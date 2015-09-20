@@ -8,8 +8,8 @@ var Fiber = require('fibers');
 var Future = require('fibers/future');
 var Promise = require('meteor-promise');
 Promise.Fiber = Fiber;
-var wrapAsync = require('@xolvio/fiber-utils').wrapAsync;
-var wrapAsyncObject = require('@xolvio/fiber-utils').wrapAsyncObject;
+var wrapAsync = require('xolvio-fiber-utils').wrapAsync;
+var wrapAsyncObject = require('xolvio-fiber-utils').wrapAsyncObject;
 
 var wrapAsyncForWebdriver = function (fn, context) {
   return wrapAsync(fn, context, {supportCallback: false});
