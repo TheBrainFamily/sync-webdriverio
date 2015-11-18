@@ -69,7 +69,7 @@ webdriverioWithSync.remote = function (options) {
 
     remoteWrapper.browsers = [];
     _wrappers.forEach(function(wrapper, index) {
-      // if one of the multiremote browsers
+      // if one of the multiremote browsers, first one is the "shared" one
       if (index > 0) {
         remoteWrapper.browsers.push(wrapper);
       }
@@ -80,16 +80,13 @@ webdriverioWithSync.remote = function (options) {
 
 
   function wrapAsyncBrowser(browser) {
-    console.log("_browsers.length", _browsers.length);
     _browsers.push(browser);
     _browsers[index].index = index;
     _wrappers.push(wrapAsyncObject(_browsers[index], commandNames, {
       syncByDefault: syncByDefault,
       wrapAsync: wrapAsyncForWebdriver
     }));
-    console.log("_browsers index after", _browsers.length);
 
-    var _addCommand = {};
     // Wrap async added commands
     _browsers[index]._addCommand = _browsers[index].addCommand;
     _browsers[index].addCommand = function(fnName, fn, forceOverwrite) {
