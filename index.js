@@ -90,7 +90,6 @@ webdriverioWithSync.remote = function (options) {
     // Wrap async added commands
     _browsers[index]._addCommand = _browsers[index].addCommand;
     _browsers[index].addCommand = function(fnName, fn, forceOverwrite) {
-      console.log("index in addCommand ", this.index);
       var result = _browsers[this.index]._addCommand.call(_browsers[index], fnName, Promise.async(fn), forceOverwrite);
       var commandWrapper = wrapAsyncObject(_browsers[this.index], [fnName], {
         syncByDefault: syncByDefault,
