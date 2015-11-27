@@ -17,31 +17,97 @@ var wrapAsyncForWebdriver = function (fn, context) {
 
 var webdriverioWithSync = _.clone(webdriverio);
 
-webdriverioWithSync.wrapAsync = wrapAsync;
-webdriverioWithSync.wrapAsyncObject = wrapAsyncObject;
+var wws = _.extend(webdriverioWithSync, {
+  wrapAsync: wrapAsync,
+  wrapAsyncObject: wrapAsyncObject,
+  index: 0,
+  _browsers: [],
+  _wrappers: [],
+  _remote: {},
+  _commandNames: [],
+  _syncByDefault: true,
+  remoteWrapper: {}
+});
+
+webdriverioWithSync.multiremote = function (options) {
+  wws.remote = webdriverio.multiremote.apply(webdriverio, arguments);
+
+  webdriverioWithSync.configureRemote(options);
+
+  Object.keys(options).forEach(function(browserName) {
+    var browser = wws.remote.select(browserName);
+    webdriverioWithSync.wrapAsyncBrowser(browser, wws.commandNames, wws.syncByDefault);
+  });
+
+  wws.remoteWrapper.browsers = [];
+  wws._wrappers.forEach(function(wrapper, index) {
+    // if one of the multiremote browsers, first one is the "shared" one
+    if (index > 0) {
+      wws.remoteWrapper.browsers.push(wrapper);
+    }
+  });
+  wws.remoteWrapper.init();
+
+  return wws.remoteWrapper;
+};
 
 webdriverioWithSync.remote = function (options) {
-  var syncByDefault = !(options && options.sync === false);
-  var multiremote = options.browser0 ? true : false;
-  var remote;
+  wws.remote = webdriverio.remote.apply(webdriverio, arguments);
 
-  if (multiremote) {
-    remote = webdriverio.multiremote.apply(webdriverio, arguments);
-  } else {
-    remote = webdriverio.remote.apply(webdriverio, arguments);
-  }
+  webdriverioWithSync.configureRemote(options);
+
+  return wws.remoteWrapper;
+};
+
+webdriverioWithSync.wrapAsyncBrowser = function(browser, commandNames, syncByDefault) {
+  wws._browsers.push(browser);
+  wws._browsers[wws.index].index = wws.index;
+  wws._wrappers.push(wrapAsyncObject(wws._browsers[wws.index], commandNames, {
+    syncByDefault: syncByDefault,
+    wrapAsync: wrapAsyncForWebdriver
+  }));
+
+  // Wrap async added commands
+  wws._browsers[wws.index]._addCommand = wws._browsers[wws.index].addCommand;
+  wws._browsers[wws.index].addCommand = function(fnName, fn, forceOverwrite) {
+    var result = wws._browsers[this.index]._addCommand.call(wws._browsers[wws.index], fnName, Promise.async(fn), forceOverwrite);
+    var commandWrapper = wrapAsyncObject(wws._browsers[this.index], [fnName], {
+      syncByDefault: syncByDefault,
+      wrapAsync: wrapAsyncForWebdriver
+    });
+    _.defaults(wws._wrappers[this.index], commandWrapper);
+
+    return result;
+  };
+
+  _.forEach([
+    'addCommand',
+    'transferPromiseness',
+    'on', 'once', 'emit', 'removeListener', 'removeAllListeners', 'select'
+  ], function(methodName) {
+    if (wws._browsers[wws.index][methodName]) {
+      wws._wrappers[wws.index][methodName] =
+          wws._browsers[wws.index][methodName]
+              .bind(wws._browsers[wws.index]);
+    }
+  });
+  wws.index++;
+};
+
+webdriverioWithSync.configureRemote = function(options) {
+  wws.syncByDefault = !(options && options.sync === false);
 
   // Run condition function in fiber
-  var waitUntil = remote.waitUntil;
-  remote.waitUntil = function (condition/*, arguments */) {
+  var waitUntil = wws.remote.waitUntil;
+  wws.remote.waitUntil = function (condition/*, arguments */) {
     arguments[0] = Promise.async(condition);
 
-    return waitUntil.apply(remote, arguments);
+    return waitUntil.apply(wws.remote, arguments);
   };
 
   // Wrap async all core commands
   var webdriverioPath = path.dirname(require.resolve('webdriverio'));
-  var commandNames = _.chain(['protocol', 'commands'])
+  wws.commandNames = _.chain(['protocol', 'commands'])
       .map(function(commandType) {
         var dir = path.resolve(webdriverioPath, path.join('lib', commandType));
         var files = fs.readdirSync(dir);
@@ -53,66 +119,8 @@ webdriverioWithSync.remote = function (options) {
       .uniq()
       .value();
 
-  var _browsers = [];
-  var _wrappers = [];
-  var index = 0;
-
-  wrapAsyncBrowser(remote);
-  var remoteWrapper = _wrappers[0];
-
-  if (multiremote) {
-
-    Object.keys(options).forEach(function(browserName) {
-      var browser = remote.select(browserName);
-      wrapAsyncBrowser(browser);
-    });
-
-    remoteWrapper.browsers = [];
-    _wrappers.forEach(function(wrapper, index) {
-      // if one of the multiremote browsers, first one is the "shared" one
-      if (index > 0) {
-        remoteWrapper.browsers.push(wrapper);
-      }
-    });
-    remoteWrapper.init();
-  }
-
-
-
-  function wrapAsyncBrowser(browser) {
-    _browsers.push(browser);
-    _browsers[index].index = index;
-    _wrappers.push(wrapAsyncObject(_browsers[index], commandNames, {
-      syncByDefault: syncByDefault,
-      wrapAsync: wrapAsyncForWebdriver
-    }));
-
-    // Wrap async added commands
-    _browsers[index]._addCommand = _browsers[index].addCommand;
-    _browsers[index].addCommand = function(fnName, fn, forceOverwrite) {
-      var result = _browsers[this.index]._addCommand.call(_browsers[index], fnName, Promise.async(fn), forceOverwrite);
-      var commandWrapper = wrapAsyncObject(_browsers[this.index], [fnName], {
-        syncByDefault: syncByDefault,
-        wrapAsync: wrapAsyncForWebdriver
-      });
-      _.defaults(_wrappers[this.index], commandWrapper);
-      return result;
-    };
-
-    _.forEach([
-      'addCommand',
-      'transferPromiseness',
-      'on', 'once', 'emit', 'removeListener', 'removeAllListeners', 'select'
-    ], function(methodName) {
-      if (_browsers[index][methodName]) {
-        _wrappers[index][methodName] =
-            _browsers[index][methodName].bind(_browsers[index]);
-      }
-    });
-    index++;
-  }
-
-  return remoteWrapper;
+  webdriverioWithSync.wrapAsyncBrowser(wws.remote, wws.commandNames, wws.syncByDefault);
+  wws.remoteWrapper = wws._wrappers[0];
 };
 
 module.exports = webdriverioWithSync;
