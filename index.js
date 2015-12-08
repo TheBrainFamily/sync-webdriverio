@@ -21,7 +21,7 @@ var wws = _.extend(webdriverioWithSync, {
   wrapAsync: wrapAsync,
   wrapAsyncObject: wrapAsyncObject,
   index: 0,
-  _browsers: [],
+  _instances: [],
   _wrappers: [],
   _remote: {},
   _commandNames: [],
@@ -39,11 +39,11 @@ webdriverioWithSync.multiremote = function (options) {
     webdriverioWithSync.wrapAsyncBrowser(browser, wws.commandNames, wws.syncByDefault);
   });
 
-  wws.remoteWrapper.browsers = [];
+  wws.remoteWrapper.instances = [];
   wws._wrappers.forEach(function(wrapper, index) {
-    // if one of the multiremote browsers, first one is the "shared" one
+    // if one of the multiremote instances, first one is the "shared" one
     if (index > 0) {
-      wws.remoteWrapper.browsers.push(wrapper);
+      wws.remoteWrapper.instances.push(wrapper);
     }
   });
   wws.remoteWrapper.init();
@@ -60,18 +60,18 @@ webdriverioWithSync.remote = function (options) {
 };
 
 webdriverioWithSync.wrapAsyncBrowser = function(browser, commandNames, syncByDefault) {
-  wws._browsers.push(browser);
-  wws._browsers[wws.index].index = wws.index;
-  wws._wrappers.push(wrapAsyncObject(wws._browsers[wws.index], commandNames, {
+  wws._instances.push(browser);
+  wws._instances[wws.index].index = wws.index;
+  wws._wrappers.push(wrapAsyncObject(wws._instances[wws.index], commandNames, {
     syncByDefault: syncByDefault,
     wrapAsync: wrapAsyncForWebdriver
   }));
 
   // Wrap async added commands
-  wws._browsers[wws.index]._addCommand = wws._browsers[wws.index].addCommand;
-  wws._browsers[wws.index].addCommand = function(fnName, fn, forceOverwrite) {
-    var result = wws._browsers[this.index]._addCommand.call(wws._browsers[wws.index], fnName, Promise.async(fn), forceOverwrite);
-    var commandWrapper = wrapAsyncObject(wws._browsers[this.index], [fnName], {
+  wws._instances[wws.index]._addCommand = wws._instances[wws.index].addCommand;
+  wws._instances[wws.index].addCommand = function(fnName, fn, forceOverwrite) {
+    var result = wws._instances[this.index]._addCommand.call(wws._instances[wws.index], fnName, Promise.async(fn), forceOverwrite);
+    var commandWrapper = wrapAsyncObject(wws._instances[this.index], [fnName], {
       syncByDefault: syncByDefault,
       wrapAsync: wrapAsyncForWebdriver
     });
@@ -85,10 +85,10 @@ webdriverioWithSync.wrapAsyncBrowser = function(browser, commandNames, syncByDef
     'transferPromiseness',
     'on', 'once', 'emit', 'removeListener', 'removeAllListeners', 'select'
   ], function(methodName) {
-    if (wws._browsers[wws.index][methodName]) {
+    if (wws._instances[wws.index][methodName]) {
       wws._wrappers[wws.index][methodName] =
-          wws._browsers[wws.index][methodName]
-              .bind(wws._browsers[wws.index]);
+          wws._instances[wws.index][methodName]
+              .bind(wws._instances[wws.index]);
     }
   });
   wws.index++;
