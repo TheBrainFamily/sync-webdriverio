@@ -68,6 +68,7 @@ webdriverioWithSync.wrapAsyncBrowser = function(browser, commandNames, syncByDef
   }));
 
   // Wrap async added commands
+  var remoteWrapper = _.last(wws._wrappers);
   wws._instances[wws.index]._addCommand = wws._instances[wws.index].addCommand;
   wws._instances[wws.index].addCommand = function(fnName, fn, forceOverwrite) {
     var result = wws._instances[this.index]._addCommand.call(wws._instances[wws.index], fnName, Promise.async(fn.bind(remoteWrapper)), forceOverwrite);
