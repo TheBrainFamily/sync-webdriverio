@@ -25,14 +25,6 @@ webdriverioWithSync.remote = function (options) {
 
   var remote = webdriverio.remote.apply(webdriverio, arguments);
 
-  // Run condition function in fiber
-  var waitUntil = remote.waitUntil;
-  remote.waitUntil = function (condition/*, arguments */) {
-    arguments[0] = Promise.async(condition);
-
-    return waitUntil.apply(remote, arguments);
-  };
-
   // Wrap async all core commands
   var webdriverioPath = path.dirname(require.resolve('webdriverio'));
   var commandNames = _.chain(['protocol', 'commands'])
@@ -51,6 +43,15 @@ webdriverioWithSync.remote = function (options) {
     syncByDefault: syncByDefault,
     wrapAsync: wrapAsyncForWebdriver
   });
+
+  // Run condition function in fiber
+  var waitUntil = remote.waitUntil;
+  remote.waitUntil = function (condition/*, arguments */) {
+    var args = _.toArray(arguments);
+    args[0] = Promise.async(condition.bind(remoteWrapper));
+
+    return waitUntil.apply(remote, args);
+  };
 
   // Wrap async added commands
   var addCommand = remote.addCommand;
