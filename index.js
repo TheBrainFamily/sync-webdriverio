@@ -61,7 +61,7 @@ webdriverioWithSync.remote = function (options) {
       syncByDefault: syncByDefault,
       wrapAsync: wrapAsyncForWebdriver
     });
-    _.defaults(remoteWrapper, commandWrapper);
+    _.extend(remoteWrapper, _.omit(commandWrapper, '_original'));
 
     return result;
   };
