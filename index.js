@@ -39,10 +39,7 @@ webdriverioWithSync.remote = function (options) {
     .uniq()
     .value();
 
-  var remoteWrapper = wrapAsyncObject(remote, commandNames, {
-    syncByDefault: syncByDefault,
-    wrapAsync: wrapAsyncForWebdriver
-  });
+  var remoteWrapper;
 
   // Run condition function in fiber
   var waitUntil = remote.waitUntil;
@@ -52,6 +49,11 @@ webdriverioWithSync.remote = function (options) {
 
     return waitUntil.apply(remote, args);
   };
+
+  remoteWrapper = wrapAsyncObject(remote, commandNames, {
+    syncByDefault: syncByDefault,
+    wrapAsync: wrapAsyncForWebdriver
+  });
 
   // Wrap async added commands
   var addCommand = remote.addCommand;
