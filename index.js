@@ -10,12 +10,13 @@ var Future = require('fibers/future');
 var Promise = require('meteor-promise');
 Promise.Fiber = Fiber;
 var wrapAsync = require('xolvio-fiber-utils').wrapAsync;
+var wrapCommand = require('wdio-sync').wrapCommand;
 var wrapAsyncObject = require('xolvio-fiber-utils').wrapAsyncObject;
 
 var commandNames = _.keys(getImplementedCommands());
 
 var wrapAsyncForWebdriver = function (fn, context) {
-  return wrapAsync(fn, context, {supportCallback: false});
+  return wrapCommand(fn.bind(context), fn.name, _.noop, _.noop);
 };
 
 var webdriverioWithSync = _.clone(webdriverio);
