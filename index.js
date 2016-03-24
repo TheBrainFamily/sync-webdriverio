@@ -1,6 +1,7 @@
 // A wrapped webdriverio with synchronous API using fibers.
 
 var webdriverio = require('webdriverio');
+var getImplementedCommands = require('webdriverio/build/lib/helpers/getImplementedCommands');
 var _ = require('underscore');
 var fs = require('fs');
 var path = require('path');
@@ -10,6 +11,8 @@ var Promise = require('meteor-promise');
 Promise.Fiber = Fiber;
 var wrapAsync = require('xolvio-fiber-utils').wrapAsync;
 var wrapAsyncObject = require('xolvio-fiber-utils').wrapAsyncObject;
+
+var commandNames = _.keys(getImplementedCommands());
 
 var wrapAsyncForWebdriver = function (fn, context) {
   return wrapAsync(fn, context, {supportCallback: false});
@@ -24,21 +27,6 @@ webdriverioWithSync.remote = function (options) {
   var syncByDefault = !(options && options.sync === false);
 
   var remote = webdriverio.remote.apply(webdriverio, arguments);
-
-  // Wrap async all core commands
-  var webdriverioPath = path.dirname(require.resolve('webdriverio'));
-  var commandNames = _.chain(['protocol', 'commands'])
-    .map(function(commandType) {
-      var dir = path.resolve(webdriverioPath, path.join('lib', commandType));
-      var files = fs.readdirSync(dir);
-      return files.map(function(filename) {
-        return filename.slice(0, -3);
-      });
-    })
-    .flatten(true)
-    .uniq()
-    .value();
-
   var remoteWrapper;
 
   // Run condition function in fiber
