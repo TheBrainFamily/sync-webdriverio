@@ -1,6 +1,6 @@
 {
   "name": "xolvio-sync-webdriverio",
-  "version": "5.0.0-rc.2",
+  "version": "5.0.0-rc.3",
   "description": "A sync version of WebdriverIO powered by Fibers",
   "keywords": [
     "webdriverio",
