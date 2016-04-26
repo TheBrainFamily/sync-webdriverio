@@ -1,6 +1,6 @@
 {
   "name": "xolvio-sync-webdriverio",
-  "version": "4.0.6",
+  "version": "5.0.0-rc.4",
   "description": "A sync version of WebdriverIO powered by Fibers",
   "keywords": [
     "webdriverio",
@@ -31,11 +31,12 @@
     ]
   },
   "dependencies": {
-    "xolvio-fiber-utils": "^2.0.3",
     "fibers": "^1.0.7",
     "meteor-promise": "^0.4.1",
     "underscore": "^1.8.3",
-    "webdriverio": "^3.2.1"
+    "wdio-sync": "^0.4.8",
+    "webdriverio": "^4.0.5",
+    "xolvio-fiber-utils": "^2.0.3"
   },
   "devDependencies": {
     "jest-cli": "^0.4.17"
