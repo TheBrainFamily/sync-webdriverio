@@ -48,7 +48,12 @@ webdriverioWithSync.multiremote = function (options) {
       _mainRemoteWrapper.instances.push(wrapper);
     }
   });
-  _mainRemoteWrapper.init();
+
+  var _returnOptions = _mainRemoteWrapper.init();
+  _mainRemoteWrapper.instances.forEach(function(browser, index) {
+    _mainRemoteWrapper.instances[index].desiredCapabilities = _returnOptions['browser' + index].value;
+    _mainRemoteWrapper.instances[index].options = options['browser' + index];
+  });
 
   return _mainRemoteWrapper;
 };
@@ -58,7 +63,13 @@ webdriverioWithSync.remote = function (options) {
 
   webdriverioWithSync.wrapAsyncBrowser(wws.remote, options);
 
-  return _.first(wws._wrappers);
+  var _mainRemoteWrapper = _.first(wws._wrappers);
+  var _returnOptions = _mainRemoteWrapper.initSync();
+
+  _mainRemoteWrapper.desiredCapabilities = _returnOptions.value;
+  _mainRemoteWrapper.options = options;
+
+  return _mainRemoteWrapper;
 };
 
 webdriverioWithSync.wrapAsyncBrowser = function(remote, options) {
