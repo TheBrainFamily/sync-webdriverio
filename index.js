@@ -51,8 +51,8 @@ webdriverioWithSync.multiremote = function (options) {
 
   var _returnOptions = _mainRemoteWrapper.init();
   _mainRemoteWrapper.instances.forEach(function(browser, index) {
-    _mainRemoteWrapper.instances[index].desiredCapabilities = _returnOptions['browser' + index].value;
-    _mainRemoteWrapper.instances[index].options = options['browser' + index];
+    browser.desiredCapabilities = _returnOptions['browser' + index].value;
+    browser.options = options['browser' + index];
   });
 
   return _mainRemoteWrapper;
