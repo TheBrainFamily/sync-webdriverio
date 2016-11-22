@@ -12,6 +12,9 @@ var wrapCommand = require('wdio-sync').wrapCommand;
 var wrapAsyncObject = require('xolvio-fiber-utils').wrapAsyncObject;
 
 var wrapAsyncForWebdriver = function (fn, context) {
+  if (!global.browser || !global.browser.options) {
+    global.browser = { options: { sync: true } };
+  }
   return wrapCommand(fn.bind(context), fn.name, _.noop, _.noop);
 };
 
