@@ -5,8 +5,7 @@ var getImplementedCommands = require('webdriverio/build/lib/helpers/getImplement
 var _ = require('underscore');
 var fs = require('fs');
 var Fiber = require('fibers');
-var Promise = require('meteor-promise');
-Promise.Fiber = Fiber;
+require('meteor-promise').makeCompatible(Promise, Fiber);
 var wrapAsync = require('xolvio-fiber-utils').wrapAsync;
 var wrapCommand = require('wdio-sync').wrapCommand;
 var wrapAsyncObject = require('xolvio-fiber-utils').wrapAsyncObject;
@@ -77,7 +76,7 @@ webdriverioWithSync.wrapAsyncBrowser = function(remote, options) {
 
   remote.waitUntil = function (condition/*, arguments */) {
     var args = _.toArray(arguments);
-    args[0] = Promise.async(condition.bind(remoteWrapper));
+    args[0] = Promise.async(condition.bind(remoteWrapper), true);
 
     return waitUntil.apply(remote, args);
   };
@@ -96,7 +95,12 @@ webdriverioWithSync.wrapAsyncBrowser = function(remote, options) {
   // Wrap async added commands
   wws._instances[wws.index]._addCommand = wws._instances[wws.index].addCommand;
   wws._instances[wws.index].addCommand = function(fnName, fn, forceOverwrite) {
-    var result = wws._instances[this.index]._addCommand.call(wws._instances[wws.index], fnName, Promise.async(fn.bind(remoteWrapper)), forceOverwrite);
+    var result = wws._instances[this.index]._addCommand.call(
+      wws._instances[wws.index],
+      fnName,
+      Promise.async(fn.bind(remoteWrapper), true),
+      forceOverwrite
+    );
     var commandWrapper = wrapAsyncObject(wws._instances[this.index], [fnName], {
       syncByDefault: syncByDefault,
       wrapAsync: wrapAsyncForWebdriver
