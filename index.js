@@ -5,6 +5,7 @@ var getImplementedCommands = require('webdriverio/build/lib/helpers/getImplement
 var _ = require('underscore');
 var fs = require('fs');
 var Fiber = require('fibers');
+var Promise = global.Promise;
 require('meteor-promise').makeCompatible(Promise, Fiber);
 var wrapAsync = require('xolvio-fiber-utils').wrapAsync;
 var wrapCommand = require('wdio-sync').wrapCommand;
