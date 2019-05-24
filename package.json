@@ -25,7 +25,7 @@
     "meteor-promise": "^0.8.2",
     "underscore": "^1.8.3",
     "wdio-sync": "^0.7.0",
-    "webdriverio": "^4.14.0",
-    "xolvio-fiber-utils": "github:sirphoenix/fiber-utils"
+    "webdriverio": "^4.14.4",
+    "xolvio-fiber-utils": "^2.0.3"
   }
 }
