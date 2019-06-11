@@ -1,6 +1,6 @@
 {
   "name": "xolvio-sync-webdriverio",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "description": "A sync version of WebdriverIO powered by Fibers",
   "keywords": [
     "webdriverio",
@@ -26,6 +26,6 @@
     "underscore": "^1.8.3",
     "wdio-sync": "^0.7.0",
     "webdriverio": "^4.14.4",
-    "xolvio-fiber-utils": "^2.0.3"
+    "xolvio-fiber-utils": "3.0.0"
   }
 }
