@@ -8,7 +8,7 @@ var Fiber = require('fibers');
 var Promise = global.Promise;
 require('meteor-promise').makeCompatible(Promise, Fiber);
 var wrapAsync = require('xolvio-fiber-utils').wrapAsync;
-var wrapCommand = require('wdio-sync').wrapCommand;
+var wrapCommand = require('@wdio/sync').wrapCommand;
 var wrapAsyncObject = require('xolvio-fiber-utils').wrapAsyncObject;
 
 var wrapAsyncForWebdriver = function (fn, context) {
