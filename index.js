@@ -1,14 +1,14 @@
 // A wrapped webdriverio with synchronous API using fibers.
 
 var webdriverio = require('webdriverio');
-var getImplementedCommands = require('webdriverio/build/lib/helpers/getImplementedCommands');
+var getPrototype = require('webdriverio/build/utils').getPrototype;
 var _ = require('underscore');
 var fs = require('fs');
 var Fiber = require('fibers');
 var Promise = global.Promise;
 require('meteor-promise').makeCompatible(Promise, Fiber);
 var wrapAsync = require('xolvio-fiber-utils').wrapAsync;
-var wrapCommand = require('@wdio/sync').wrapCommand;
+var wrapCommand = require('@wdio/sync/build/wrapCommand');
 var wrapAsyncObject = require('xolvio-fiber-utils').wrapAsyncObject;
 
 var wrapAsyncForWebdriver = function (fn, context) {
@@ -69,7 +69,7 @@ webdriverioWithSync.remote = function (options) {
 webdriverioWithSync.wrapAsyncBrowser = function(remote, options) {
   var syncByDefault = !(options && options.sync === false);
 
-  var commandNames = _.keys(getImplementedCommands());
+  var commandNames = Object.keys(getPrototype('element')).concat(Object.keys(getPrototype('browser')));
 
   var remoteWrapper;
 
